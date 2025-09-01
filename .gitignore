@@ -1,0 +1,34 @@
+# Ignore test and mock directories
+/entry/src/ohosTest/
+/entry/src/test/
+/entry/src/mock
+/entry/src/**/.test/
+
+# Ignore build and preview directories
+/entry/build/
+/entry/.preview/
+/entry/.appanalyzer
+
+# Ignore module and dependency folders
+/node_modules/
+/oh_modules/
+/entry/node_modules/
+/entry/oh_modules/
+/entry/**/build/
+
+# Ignore IDE and local config files
+/.idea/
+/.hvigor/
+/.vscode/
+/.VSCodeCounter
+/local.properties
+.cxx
+/.clangd
+/.clang-format
+/.clang-tidy
+
+# Ignore certificate and key files
+*.p12
+*.p7b
+*.cer
+*.csr
