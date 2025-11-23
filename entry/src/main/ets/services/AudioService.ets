@@ -1,6 +1,8 @@
 import { media } from '@kit.MediaKit';
 import { common } from '@kit.AbilityKit';
 import { BusinessError } from '@kit.BasicServicesKit';
+import GlobalContext from '../common/GlobalContex';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 interface FileDescriptor {
   fd: number;
@@ -16,9 +18,8 @@ export default class AudioService {
       await AudioService.avPlayer.release();
     }
 
-    const context = getContext() as common.UIAbilityContext;
+    const context = GlobalContext.getInstance().getCustomContext() as common.UIAbilityContext;
     const fdInfo = await context.resourceManager.getRawFd(resource);
-    console.log("fdInfo" + fdInfo)
     const fileDescriptor: FileDescriptor = {
       fd: fdInfo.fd,
       offset: fdInfo.offset,
@@ -29,11 +30,11 @@ export default class AudioService {
     avPlayerInstance.fdSrc = fileDescriptor;
 
     avPlayerInstance.on('error', (err) => {
-      console.error(`[AVPlayer] Error: ${JSON.stringify(err)}`);
+      hilog.error(0x1234,'[Audio]',`[AVPlayer] Error: ${JSON.stringify(err)}`);
     });
 
     avPlayerInstance.on('stateChange', async (state: string) => {
-      console.log("here on")
+      hilog.info(0x1311,'[Audio]','here on')
       if (state === 'initialized') {
         await avPlayerInstance.prepare();
       } else if (state === 'prepared') {

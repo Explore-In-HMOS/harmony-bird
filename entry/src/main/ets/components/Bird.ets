@@ -4,9 +4,9 @@ export default struct Bird {
   @Prop flapIndex: number;
 
   private readonly frames: Resource[] = [
-    $r("app.media.bluebird_upflap"),
-    $r("app.media.bluebird_midflap"),
-    $r("app.media.bluebird_downflap")
+    $r('app.media.bluebird_upflap'),
+    $r('app.media.bluebird_midflap'),
+    $r('app.media.bluebird_downflap')
   ];
 
   build() {

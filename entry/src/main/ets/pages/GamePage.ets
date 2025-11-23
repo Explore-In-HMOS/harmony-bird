@@ -3,7 +3,12 @@ import AudioService from '../services/AudioService';
 import { GameState, Pipe } from '../common/Types';
 import Bird from '../components/Bird';
 import PipeView from '../components/Pipe';
-import router from '@ohos.router';
+
+
+@Builder
+export function GamePageBuilder (){
+  GamePage()
+}
 
 @Entry
 @Component
@@ -14,6 +19,7 @@ struct GamePage {
   @State flapIndex: number = 0;
   @State score: number = 0;
   @State afkPipe: Pipe[] = []
+  pageInfos: NavPathStack = new NavPathStack();
 
   aboutToAppear(): void {
     this.startGameLoop();
@@ -66,7 +72,7 @@ struct GamePage {
     await AudioService.play('hit.mp3');
     await AudioService.play('die.mp3');
     this.stopGameLoop();
-    router.pushUrl({ url: 'pages/GameOverPage' });
+    this.pageInfos.pushPathByName('GameOverPage',null,false)
   }
 
   private checkCollisions(): void {
@@ -95,9 +101,11 @@ struct GamePage {
   }
 
   build() {
+
+    NavDestination(){
     Column() {
       Stack() {
-        Image($r("app.media.background_day1"))
+        Image($r('app.media.background_day1'))
           .width('100%')
           .height('100%')
         ForEach(
@@ -120,5 +128,11 @@ struct GamePage {
           .onAction(() => this.handleTap())
       )
     }
+    }.width('100%')
+    .height('100%')
+    .hideTitleBar(true)
+    .onReady((context: NavDestinationContext) => {
+      this.pageInfos = context.pathStack;
+    })
   }
 }

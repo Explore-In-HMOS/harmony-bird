@@ -55,8 +55,9 @@ export default class GameService {
   addPipe(): void {
     const lastPipe = this.pipes[this.pipes.length - 1];
     if (!lastPipe || lastPipe.x < 140) {
-      const topY = Math.random() * 50 - 100;
-      const bottomY = Math.random() * (160 - 140) + 140;
+      const now = new Date();
+      const topY = now.getMilliseconds() % 50 - 100;
+      const bottomY = now.getMilliseconds() % 20 + 140;
       this.pipes.push({
         x: 210,
         topY,

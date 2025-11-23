@@ -1,6 +1,7 @@
 {
   "src": [
     "pages/GamePage",
-    "pages/GameOverPage"
+    "pages/GameOverPage",
+    "pages/Index"
   ]
 }

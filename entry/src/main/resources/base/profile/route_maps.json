@@ -1,0 +1,14 @@
+{
+  "routerMap" : [
+    {
+      "name" : "GamePage",
+      "pageSourceFile"  : "src/main/ets/pages/GamePage.ets",
+      "buildFunction" : "GamePageBuilder"
+    },
+    {
+      "name" : "GameOverPage",
+      "pageSourceFile"  : "src/main/ets/pages/GameOverPage.ets",
+      "buildFunction" : "GameOverPageBuilder"
+    }
+  ]
+}
