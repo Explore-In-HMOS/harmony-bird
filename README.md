@@ -4,12 +4,13 @@
 
 A Bird-inspired mini game built for HarmonyOS NEXT wearable devices, developed using ArkTS.
 The game features auto-scrolling pipes, tap-to-flap mechanics, random pipe height and real-time score tracking.
+
 # Preview
 
 <div>
-    <img src="./screenshots/birds.gif" width="25%"/>
-    <img src="./screenshots/screenshot1.png" width="25%"/>
-    <img src="./screenshots/screenshot2.png" width="25%"/>
+  <img src="./screenshots/birds.gif" width="25%" />
+  <img src="./screenshots/screenshot1.png" width="25%" />
+  <img src="./screenshots/screenshot2.png" width="25%" />
 </div>
 
 # Use Cases
@@ -56,6 +57,7 @@ entry/src/main/ets/
 - Huawei Watch 5
 
 ## Operation Guide
+
 1. Clone the repository into DevEco Studio.
 2. Make sure you are using **DevEco Studio 5.1.0+**
 3. Connect a Huawei smartwatch (Watch 5 or equivalent).
@@ -65,11 +67,13 @@ entry/src/main/ets/
 # License
 
 **Harmony Bird** is distributed under the terms of the MIT License
-See the [LICENSE](./LICENSE) for more information.
+See the [license](./LICENSE) for more information.
 
 ## Creative Commons Assets Used
+
 The images/musics used in this project are shared under the Creative Commons and MIT
 license.
+
 - License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - Source: [images](https://megacrash.itch.io/flappy-bird-assets#google_vignette)
 - Source: [musics](https://github.com/samuelcust/flappy-bird-assets/blob/master/LICENSE)

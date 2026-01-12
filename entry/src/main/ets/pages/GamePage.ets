@@ -15,7 +15,7 @@ export function GamePageBuilder (){
 struct GamePage {
   private game: GameService = new GameService();
   private gameInterval?: number;
-  @State state: GameState = GameState.READY;
+  private state: GameState = GameState.READY;
   @State flapIndex: number = 0;
   @State score: number = 0;
   @State afkPipe: Pipe[] = []
@@ -103,7 +103,6 @@ struct GamePage {
   build() {
 
     NavDestination(){
-    Column() {
       Stack() {
         Image($r('app.media.background_day1'))
           .width('100%')
@@ -113,7 +112,7 @@ struct GamePage {
           (pipe: Pipe) => {
             PipeView({ pipe })
           },
-          (pipe: Pipe, index: number) => `${pipe.x}_${index}`
+          (pipe: Pipe) => `${pipe.x}`
         )
         Bird({ birdY: this.game.birdY, flapIndex: this.flapIndex })
         Text(this.score.toString())
@@ -127,7 +126,6 @@ struct GamePage {
         TapGesture()
           .onAction(() => this.handleTap())
       )
-    }
     }.width('100%')
     .height('100%')
     .hideTitleBar(true)
