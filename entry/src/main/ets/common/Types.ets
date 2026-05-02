@@ -10,3 +10,13 @@ export interface Pipe {
   bottomY: number;
   passed?: boolean;
 }
+
+export interface GameOverParams {
+  score: number;
+  highScore: number;
+  isNewRecord: boolean;
+}
+
+export interface HomeToGameParams {
+  accelEnabled: boolean;
+}

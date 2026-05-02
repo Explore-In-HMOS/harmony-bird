@@ -2,6 +2,7 @@
   "src": [
     "pages/GamePage",
     "pages/GameOverPage",
-    "pages/Index"
+    "pages/Index",
+    "pages/HomePage"
   ]
 }

@@ -1,112 +1,74 @@
-import GameService from '../services/GameService';
-import AudioService from '../services/AudioService';
-import { GameState, Pipe } from '../common/Types';
+import { GameViewModel } from '../viewmodels/GameViewModel';
+import { Pipe, GameOverParams, HomeToGameParams } from '../common/Types';
 import Bird from '../components/Bird';
 import PipeView from '../components/Pipe';
-
+import { window } from '@kit.ArkUI';
+import GlobalContext from '../common/GlobalContext';
+import { PAGES } from '../common/Pages';
 
 @Builder
-export function GamePageBuilder (){
+export function GamePageBuilder() {
   GamePage()
 }
 
 @Entry
 @Component
 struct GamePage {
-  private game: GameService = new GameService();
-  private gameInterval?: number;
-  private state: GameState = GameState.READY;
+  private vm: GameViewModel = new GameViewModel();
+  private pipeUpdateInterval?: number;
+  @State afkPipe: Pipe[] = []
   @State flapIndex: number = 0;
   @State score: number = 0;
-  @State afkPipe: Pipe[] = []
+  @State birdY: number = 120;
   pageInfos: NavPathStack = new NavPathStack();
 
   aboutToAppear(): void {
-    this.startGameLoop();
+    window.getLastWindow(
+      GlobalContext.getInstance().getCustomContext())
+      .then((win) => {
+        win.setWindowKeepScreenOn(true);
+      });
+
+    this.vm.onStateChanged = () => {
+      this.flapIndex = this.vm.flapIndex;
+      this.score = this.vm.score;
+      this.birdY = this.vm.birdY;
+    };
+
+    this.vm.onGameOver = (params: GameOverParams) => {
+      this.pageInfos.pushPathByName(PAGES.GAMEOVERPAGE, params, false);
+    };
+
+    this.pipeUpdateInterval = setInterval(() => {
+      this.afkPipe = this.vm.pipes;
+    }, 300);
   }
 
   aboutToDisappear(): void {
-    this.stopGameLoop();
-  }
+    window.getLastWindow(
+      GlobalContext.getInstance().getCustomContext())
+      .then((win) => {
+        win.setWindowKeepScreenOn(false);
+      });
 
-  private pipeTimer: number = 0;
-  private startGameLoop(): void {
-    this.pipeTimer = 0;
-    this.gameInterval = setInterval(() => {
-      if (this.game.state === GameState.PLAYING) {
-        this.game.update();
-        this.checkCollisions();
-
-        if (this.pipeTimer++ >= 45) {
-          this.game.addPipe();
-          this.pipeTimer = 0;
-        }
-
-        this.flapIndex++;
-        this.score = this.game.score;
-      }
-      this.state = this.game.state;
-    }, 30);
-  }
-
-  private stopGameLoop(): void {
-    if (this.gameInterval) {
-      clearInterval(this.gameInterval);
-      this.gameInterval = undefined;
+    this.vm.destroy();
+    if (this.pipeUpdateInterval) {
+      clearInterval(this.pipeUpdateInterval);
+      this.pipeUpdateInterval = undefined;
     }
   }
 
-  private async handleTap() {
-    this.afkPipe = this.game.pipes
-    if (this.game.state === GameState.READY) {
-      this.game.state = GameState.PLAYING;
-      await AudioService.play('swoosh.mp3');
-    } else if (this.game.state === GameState.PLAYING) {
-      this.game.flap();
-      await AudioService.play('wing.mp3');
-    }
-  }
-
-  private async gameOver() {
-    this.game.state = GameState.GAME_OVER;
-    await AudioService.play('hit.mp3');
-    await AudioService.play('die.mp3');
-    this.stopGameLoop();
-    this.pageInfos.pushPathByName('GameOverPage',null,false)
-  }
-
-  private checkCollisions(): void {
-    if (this.game.birdY > 400 || this.game.birdY <= 0) {
-      this.gameOver();
-      return;
-    }
-
-    for (const pipe of this.game.pipes) {
-      const birdRight = 72 + 30;
-      const birdLeft = 72;
-      const pipeRight = pipe.x + 52;
-      const pipeLeft = pipe.x;
-
-      if (birdRight > pipeLeft && birdLeft < pipeRight) {
-        const birdBottom = this.game.birdY + 30;
-        const birdTop = this.game.birdY;
-        const pipeTopBottom = pipe.topY + 120;
-        const pipeBottomTop = pipe.bottomY + 30
-        if (birdTop < pipeTopBottom || birdBottom > pipeBottomTop) {
-          this.gameOver();
-          return;
-        }
-      }
-    }
+  private handleTap(): void {
+    this.vm.handleTap();
   }
 
   build() {
-
-    NavDestination(){
+    NavDestination() {
       Stack() {
         Image($r('app.media.background_day1'))
           .width('100%')
           .height('100%')
+
         ForEach(
           this.afkPipe,
           (pipe: Pipe) => {
@@ -114,7 +76,9 @@ struct GamePage {
           },
           (pipe: Pipe) => `${pipe.x}`
         )
-        Bird({ birdY: this.game.birdY, flapIndex: this.flapIndex })
+
+        Bird({ birdY: this.birdY, flapIndex: this.flapIndex })
+
         Text(this.score.toString())
           .fontSize(30)
           .fontColor(Color.White)
@@ -126,11 +90,22 @@ struct GamePage {
         TapGesture()
           .onAction(() => this.handleTap())
       )
-    }.width('100%')
+    }
+    .width('100%')
     .height('100%')
     .hideTitleBar(true)
+    .focusable(true)
+    .defaultFocus(true)
+    .onDigitalCrown((event: CrownEvent) => {
+      event.stopPropagation();
+      this.vm.handleCrown(event.angularVelocity);
+    })
+    .onBackPressed(() => true)
     .onReady((context: NavDestinationContext) => {
       this.pageInfos = context.pathStack;
+      const params = context.pathInfo.param as HomeToGameParams;
+      const accelEnabled = params ? params.accelEnabled : true;
+      this.vm.start(accelEnabled);
     })
   }
 }

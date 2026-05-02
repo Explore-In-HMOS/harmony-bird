@@ -15,6 +15,50 @@
     {
       "name": "reason_background",
       "value": "Location information is required for map features."
+    },
+    {
+      "name": "game_over_title",
+      "value": "GAME OVER"
+    },
+    {
+      "name": "game_over_retry",
+      "value": "Retry"
+    },
+    {
+      "name": "game_over_home",
+      "value": "Home"
+    },
+    {
+      "name": "game_over_best",
+      "value": "Best"
+    },
+    {
+      "name": "game_over_new_record",
+      "value": "New Record!"
+    },
+    {
+      "name": "game_over_so_close",
+      "value": "So close!"
+    },
+    {
+      "name": "game_over_running",
+      "value": "Running"
+    },
+    {
+      "name": "game_over_stopped",
+      "value": "Stopped"
+    },
+    {
+      "name": "home_title",
+      "value": "Harmony Bird"
+    },
+    {
+      "name": "home_play",
+      "value": "Play"
+    },
+    {
+      "name": "home_shake_to_play",
+      "value": "Play with Accelerometer"
     }
   ]
 }

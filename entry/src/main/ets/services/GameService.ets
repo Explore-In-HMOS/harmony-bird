@@ -8,6 +8,7 @@ export default class GameService {
   public pipes: Pipe[] = [];
   public score: number = 0;
   public state: GameState = GameState.READY;
+  private pipeIdCounter: number = 0;
 
   reset(): void {
     this.birdY = 120;
@@ -15,6 +16,7 @@ export default class GameService {
     this.pipes = [];
     this.score = 0;
     this.state = GameState.READY;
+    this.pipeIdCounter = 0;
   }
 
   flap(): void {
@@ -22,15 +24,19 @@ export default class GameService {
   }
 
   update(): void {
-    if (this.state !== GameState.PLAYING) {return;}
+    if (this.state !== GameState.PLAYING) {
+      return;
+    }
 
     this.velocity += this.gravity;
     this.birdY += this.velocity;
 
     const updatedPipes: Pipe[] = [];
+
     for (let pipe of this.pipes) {
       const newX = pipe.x - 1;
-      if (newX > -52) {
+
+      if (newX > -60) {
         updatedPipes.push({
           x: newX,
           topY: pipe.topY,
@@ -39,22 +45,27 @@ export default class GameService {
         });
       }
     }
-    this.pipes = updatedPipes;
 
-    for (let i = 0; i < this.pipes.length; i++) {
-      const pipe = this.pipes[i];
+    for (let i = 0; i < updatedPipes.length; i++) {
+      const pipe = updatedPipes[i];
+
       if (!pipe.passed && pipe.x + 52 < 72) {
-        this.pipes[i].passed = true;
+        updatedPipes[i] = {
+          x: pipe.x,
+          topY: pipe.topY,
+          bottomY: pipe.bottomY,
+          passed: true
+        };
         this.score++;
       }
     }
-    this.pipes = this.pipes.filter(pipe => pipe.x > -60);
 
+    this.pipes = updatedPipes;
   }
 
   addPipe(): void {
     const lastPipe = this.pipes[this.pipes.length - 1];
-    if (!lastPipe || lastPipe.x < 140) {
+    if (!lastPipe || lastPipe.x < 100) {
       const now = new Date();
       const topY = now.getMilliseconds() % 50 - 100;
       const bottomY = now.getMilliseconds() % 20 + 140;
@@ -66,5 +77,4 @@ export default class GameService {
       });
     }
   }
-
 }

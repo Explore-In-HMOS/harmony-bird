@@ -3,6 +3,54 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
+    },
+    {
+      "name": "game_over_bg",
+      "value": "#0D0D1A"
+    },
+    {
+      "name": "game_over_primary",
+      "value": "#FFE29727"
+    },
+    {
+      "name": "game_over_gold",
+      "value": "#FFD700"
+    },
+    {
+      "name": "game_over_white",
+      "value": "#F0F0FF"
+    },
+    {
+      "name": "game_over_grey",
+      "value": "#8888AA"
+    },
+    {
+      "name": "game_over_grey_dark",
+      "value": "#2A2A4A"
+    },
+    {
+      "name": "game_over_green",
+      "value": "#4DFFB4"
+    },
+    {
+      "name": "game_over_red",
+      "value": "#FF4D6D"
+    },
+    {
+      "name": "home_overlay_bg",
+      "value": "#4D000000"
+    },
+    {
+      "name": "game_over_gold_bg",
+      "value": "#26FFD700"
+    },
+    {
+      "name": "game_over_gold_border",
+      "value": "#59FFD700"
+    },
+    {
+      "name": "card_bg",
+      "value": "#CC0D0D1A"
     }
   ]
 }

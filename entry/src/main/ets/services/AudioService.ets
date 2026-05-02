@@ -1,7 +1,7 @@
 import { media } from '@kit.MediaKit';
+import { audio } from '@kit.AudioKit';
 import { common } from '@kit.AbilityKit';
-import { BusinessError } from '@kit.BasicServicesKit';
-import GlobalContext from '../common/GlobalContex';
+import GlobalContext from '../common/GlobalContext';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
 interface FileDescriptor {
@@ -29,12 +29,28 @@ export default class AudioService {
     const avPlayerInstance = await media.createAVPlayer();
     avPlayerInstance.fdSrc = fileDescriptor;
 
+    avPlayerInstance.on('audioInterrupt', (interruptEvent: audio.InterruptEvent) => {
+      if (interruptEvent.forceType === audio.InterruptForceType.INTERRUPT_FORCE) {
+        switch (interruptEvent.hintType) {
+          case audio.InterruptHint.INTERRUPT_HINT_PAUSE:
+          case audio.InterruptHint.INTERRUPT_HINT_STOP:
+            break;
+          default:
+            break;
+        }
+      }
+    });
+
+    avPlayerInstance.on('audioOutputDeviceChangeWithInfo', () => {
+      hilog.info(0x1234, '[Audio]', 'Audio output device changed');
+    });
+
     avPlayerInstance.on('error', (err) => {
-      hilog.error(0x1234,'[Audio]',`[AVPlayer] Error: ${JSON.stringify(err)}`);
+      hilog.error(0x1234, '[Audio]', `[AVPlayer] Error: ${JSON.stringify(err)}`);
     });
 
     avPlayerInstance.on('stateChange', async (state: string) => {
-      hilog.info(0x1311,'[Audio]','here on')
+      hilog.info(0x1311, '[Audio]', 'here on');
       if (state === 'initialized') {
         await avPlayerInstance.prepare();
       } else if (state === 'prepared') {

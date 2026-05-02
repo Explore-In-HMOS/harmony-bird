@@ -1,53 +1,73 @@
-> **Note:** To access all shared projects, get information about environment setup, and view other guides, please visit [Explore-In-HMOS-Wearable Index](https://github.com/Explore-In-HMOS-Wearable/hmos-index).
-
 # Bird Game
 
-A Bird-inspired mini game built for HarmonyOS NEXT wearable devices, developed using ArkTS.
-The game features auto-scrolling pipes, tap-to-flap mechanics, random pipe height and real-time score tracking.
+A Flappy Bird-inspired mini game built for HarmonyOS NEXT wearable devices, developed using ArkTS.
+The game features auto-scrolling pipes, multiple input methods, persistent high score tracking, and a polished wearable-native UI.
 
 # Preview
 
 <div>
-  <img src="./screenshots/birds.gif" width="25%" />
-  <img src="./screenshots/screenshot1.png" width="25%" />
-  <img src="./screenshots/screenshot2.png" width="25%" />
+  <img src="./screenshots/1.png" width="25%" />
+  <img src="./screenshots/2.png" width="25%" />
+  <img src="./screenshots/3.png" width="25%" />
 </div>
 
 # Use Cases
 
-- **Wearable Entertainment**: Provide a quick, enjoyable gaming experience on smartwatches.
-- **Wearable Audio usage**: The app also provide a simple audio usage on the smartwatches.
+- **Three Input Methods**: Tap the screen, rotate the Digital Crown, or tilt your wrist forward to flap the bird
+- **Persistent High Score**: Best score is saved locally using ArkData Preferences and survives app restarts
+- **New Record Detection**: Animated trophy screen with gold glow effect when a new high score is set
+- **Haptic Feedback**: Short vibration on every flap via Basic Services Kit
+- **Home Screen**: Toggle wrist gesture input on/off before starting the game
+- **Screen Always On**: Display stays active during gameplay using Window Kit
 
-# Tech Stack
+# Technology
 
-- **Language**: ArkTS
-- **Framework**: HarmonyOS NEXT
-- **Tools**: DevEco Studio 5.1.0.849
+## Stack
+**Languages**: ArkTS, ArkUI
+
+**Frameworks**: HarmonyOS SDK 5.1.0(18)
+
+**Tools**: DevEco Studio Vers 5.1.0.842
+
+**Libraries**: `@kit.AbilityKit`, `@kit.ArkUI`, `@kit.ArkData`, `@kit.SensorServiceKit`, `@kit.BasicServicesKit`, `@kit.MediaKit`, `@kit.AudioKit`
+
+## Required Permissions
+* `"ohos.permission.ACCELEROMETER"`
+* `"ohos.permission.VIBRATE"`
 
 # Directory Structure
 
 ```
 entry/src/main/ets/
 ├── common/
-│ └── Types.ets // Game state enums and Pipe interface
+│   ├── GlobalContext.ets     // Singleton UIAbilityContext holder
+│   ├── Pages.ets            // Page name constants
+│   └── Types.ets            // GameState enum, Pipe interface, param types
 │
 ├── components/
-│ ├── Bird.ets // Animated bird with sprite frames
-│ ├── Pipe.ets // Renders upper/lower pipe views
-│ └── Ground.ets // Handles scrolling ground layer
+│   ├── Bird.ets             // Animated bird with sprite frames
+│   └── Pipe.ets             // Renders upper/lower pipe pair
 │
 ├── pages/
-│ ├── GamePage.ets // Core gameplay logic and layout
-│ └── GameOverPage.ets // Game over layout placeholder
+│   ├── HomePage.ets         // Start screen with high score and accel toggle
+│   ├── GamePage.ets         // UI layer — renders game state from ViewModel
+│   └── GameOverPage.ets     // Score display, new record animation, retry/home
 │
 ├── services/
-│ ├── GameService.ets // Physics, scoring, and game loop logic
-│ └── AudioService.ets // Sound playback using AVPlayer
+│   ├── GameService.ets      // Physics engine — birdY, velocity, pipes, scoring
+│   ├── AudioService.ets     // Sound playback using AVPlayer
+│   └── ScoreService.ets     // High score read/write via ArkData Preferences
+│
+├── viewmodels/
+│   └── GameViewModel.ets    // Game loop, collision, input (tap/crown/accel), game over
 │
 ├── resources/
-│ └── media/ // Sprite PNGs and audio (wav/mp3) files
+│   ├── base/element/
+│   │   ├── color.json       // All UI colors
+│   │   └── string.json      // All UI strings (EN)
+│   └── media/               // Sprite PNGs and audio (wav/mp3) files
 │
-└── module.json5 // Metadata and device compatibility
+└── module.json5             // Metadata and device compatibility
 ```
 
 # Constraints and Restrictions
@@ -55,14 +75,6 @@ entry/src/main/ets/
 ## Suported Devices
 
 - Huawei Watch 5
-
-## Operation Guide
-
-1. Clone the repository into DevEco Studio.
-2. Make sure you are using **DevEco Studio 5.1.0+**
-3. Connect a Huawei smartwatch (Watch 5 or equivalent).
-4. Build and deploy to the wearable device.
-5. Tap anywhere on the screen to flap the bird and start playing.
 
 # License
 

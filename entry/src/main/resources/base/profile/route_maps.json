@@ -9,6 +9,11 @@
       "name" : "GameOverPage",
       "pageSourceFile"  : "src/main/ets/pages/GameOverPage.ets",
       "buildFunction" : "GameOverPageBuilder"
+    },
+    {
+      "name" : "HomePage",
+      "pageSourceFile"  : "src/main/ets/pages/HomePage.ets",
+      "buildFunction" : "HomePageBuilder"
     }
   ]
 }

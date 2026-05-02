@@ -2,7 +2,6 @@
 export default struct Bird {
   @Prop birdY: number;
   @Prop flapIndex: number;
-
   private readonly frames: Resource[] = [
     $r('app.media.bluebird_upflap'),
     $r('app.media.bluebird_midflap'),
