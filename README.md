@@ -2,7 +2,7 @@
 
 # Bird Game
 
-A Flappy Bird-inspired mini game built for HarmonyOS NEXT wearable devices, developed using ArkTS.
+A Flappy Bird-inspired mini game built for HarmonyOS wearable devices, developed using ArkTS.
 The game features auto-scrolling pipes, multiple input methods, persistent high score tracking, and a polished wearable-native UI.
 
 # Preview
